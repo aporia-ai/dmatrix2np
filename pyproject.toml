@@ -6,11 +6,12 @@ authors = ["Aporia technologies ltd <dev@aporia.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = "^3.5"
-numpy = "^1.18.4"
+python = "^3.6.1"
+numpy = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.4.1"
+pre-commit = "^2.3.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
