@@ -2,6 +2,8 @@
 
 [![Tests](https://github.com/aporia-ai/dmatrix2np/workflows/Test/badge.svg)](https://github.com/aporia-ai/dmatrix2np/actions?workflow=Test) [![PyPI](https://img.shields.io/pypi/v/dmatrix2np.svg)](https://pypi.org/project/dmatrix2np/)
 
+Convert XGBoost's DMatrix format to np.array.
+
 ## Usage
 
 To install the library, run:
@@ -11,7 +13,7 @@ To install the library, run:
 Then, you can call in your code:
 
     from dmatrix2np import dmatrix2np
-    
+
     converted_np_array = dmatrix2np(dmatrix)
 
 ## Development
