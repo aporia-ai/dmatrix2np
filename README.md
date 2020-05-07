@@ -18,12 +18,15 @@ Then, you can call in your code:
 
 ## Development
 
-We use [poetry](https://python-poetry.org/) and [tox](https://tox.readthedocs.io/en/latest/) for development:
+We use [poetry](https://python-poetry.org/) for development:
 
-    pip install poetry tox
+    pip install poetry
 
 To install all dependencies and run tests:
 
+    poetry run pytest
+    
+To run tests on the entire matrix (Python 3.6, 3.7, 3.8 + XGBoost 0.80, 0.90, 1.0):
+    
+    pip install tox
     tox
-
-Our test matrix includes Python versions 3.6, 3.7, 3.8, and XGBoost versions 0.80, 0.90, 1.0.
