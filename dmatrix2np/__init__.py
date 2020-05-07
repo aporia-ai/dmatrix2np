@@ -1,4 +1,4 @@
-import numpy as np
+from .dmatrix2np import dmatrix2np
 
 # Single source the package version
 try:
@@ -9,7 +9,3 @@ try:
     __version__ = version(__name__)
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
-
-
-def dmatrix_to_numpy(dmatrix):
-    return np.zeros((3, 3))
