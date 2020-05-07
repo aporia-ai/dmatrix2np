@@ -1,4 +1,4 @@
-from .dmatrix2np import dmatrix2np
+from .dmatrix_to_numpy import dmatrix_to_numpy
 
 # Single source the package version
 try:

@@ -14,7 +14,7 @@ Then, you can call in your code:
 
     from dmatrix2np import dmatrix2np
 
-    converted_np_array = dmatrix2np(dmatrix)
+    converted_np_array = dmatrix_to_numpy(dmatrix)
 
 ## Development
 

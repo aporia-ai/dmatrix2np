@@ -1,5 +1,5 @@
-from dmatrix2np import dmatrix2np
+from dmatrix2np import dmatrix_to_numpy
 
 
 def test_none():
-    dmatrix2np(None)
+    dmatrix_to_numpy(None)
