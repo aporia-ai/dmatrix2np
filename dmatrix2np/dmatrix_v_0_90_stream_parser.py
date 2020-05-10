@@ -1,6 +1,6 @@
 from .dmatrix_stream_parser import DMatrixStreamParser
 from .exceptions import InvalidStructure
-from .common import FieldDataType, size_t_size, size_t_dtype_str, data_type_sizes, byte_order_str
+from .common import size_t_size, size_t_dtype_str, byte_order_str
 import numpy as np
 
 
@@ -38,31 +38,11 @@ class DMatrixStreamParserV0_90(DMatrixStreamParser):
         # Skip num_row_, num_col_, num_nonzero_ (all uint64_t)
         self._handle.read(24)
 
-        # skip 5 info vectors
-        self._num_of_fields = int.from_bytes(self._handle.read(8), byte_order_str)
-        self._fields_offset = self._handle.tell()
-        for _ in range(self._num_of_fields):
-            self._skip_field()
-
-    def _skip_vector(self):
-        # Skip field name (pascal string)
-        name_size = int.from_bytes(self._handle.read(8), byte_order_str)
-        self._handle.read(name_size)
-
-        # Find field type
-        field_type = FieldDataType(int.from_bytes(self._handle.read(1), byte_order_str))
-        is_scalar = self._handle.read(1) == b'\x01'
-
-        if is_scalar:
-            self._handle.read(data_type_sizes[field_type.name])
-        else:
-            # Skip shape.first, shape.second
-            self._handle.read(16)
-
+        # skip vectors vector
+        vectors_entry_sizes = [4, 4, 8, 4, 4, 4]
+        for vector_entry_size in vectors_entry_sizes:
             vector_size = int.from_bytes(self._handle.read(8), byte_order_str)
-
-            # Skip vector
-            self._handle.read(vector_size * data_type_sizes[field_type.name])
+            self._handle.read(vector_size * vector_entry_size)
 
     def _parse_offset_vector(self):
         self._offset_vector_offset = self._handle.tell()
