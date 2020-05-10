@@ -12,11 +12,19 @@ class FieldDataType(Enum):
 
 data_type_sizes = {
     'kFloat32': 4,
-    'kDouble': 8,
+    'kDouble': struct.calcsize("d"),
     'kUInt32': 4,
     'kUInt64': 8,
+    'bool': 1,
+    'uint8_t': 1,
+    'int32_t': 4,
+    'uint32_t': 4,
+    'uint64_t': 8,
+    'int': struct.calcsize("i"),
+    'float': struct.calcsize("f"),
+    'double': struct.calcsize("d"),
+    'size_t': struct.calcsize("N"),
 }
 
-size_t_size = struct.calcsize("N")
-byte_order_str = sys.byteorder
-size_t_dtype_str = f'{"<" if byte_order_str == "little" else ">"}i{size_t_size}'
+BYTE_ORDER_STR = sys.byteorder
+SIZE_T_DTYPE = f'{"<" if BYTE_ORDER_STR == "little" else ">"}i{data_type_sizes["size_t"]}'
