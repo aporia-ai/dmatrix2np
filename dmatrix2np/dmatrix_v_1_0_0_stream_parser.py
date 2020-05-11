@@ -72,9 +72,12 @@ class DMatrixStreamParserV1_0_0(DMatrixStreamParser):
         data_vector_size = int.from_bytes(self._handle.read(data_type_sizes['uint64_t']), BYTE_ORDER_STR)
         data_vector_entry_size = data_type_sizes['uint32_t'] + data_type_sizes['float']
         self._data_vector = np.frombuffer(buffer=self._handle.read(data_vector_size * data_vector_entry_size),
-                                          dtype=np.dtype([('keys', 'i4'), ('data', 'f4')]))
+                                          dtype=np.dtype([('keys', 'i4'), ('data', 'float32')]))
     
     def _to_nparray(self):
+        if self.num_row == 0 or self.num_col == 0:
+            self.np_array = np.empty((self.num_row, self.num_col))
+            return
         matrix = np.nan * np.empty((self.num_row * self.num_col))
         sizes = self._offset_vector[1:] - self._offset_vector[:-1]
         add_array = np.repeat(np.arange(0, sizes.size*self.num_col, self.num_col), sizes)

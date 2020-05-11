@@ -4,7 +4,7 @@ import xgboost as xgb
 import numpy as np
 from .dmatrix_v_1_0_0_stream_parser import DMatrixStreamParserV1_0_0
 from .dmatrix_v_0_80_stream_parser import DMatrixStreamParserV0_80
-from .exceptions import UnsupportedVersion
+from .exceptions import UnsupportedVersion, InvalidInput
 
 XGBOOST_VER_2_STREAM_PARSER = {
     '0.80': DMatrixStreamParserV0_80,
@@ -18,6 +18,9 @@ XGBOOST_VER_2_STREAM_PARSER = {
 }
 
 def dmatrix_to_numpy(dmatrix):
+    if not isinstance(dmatrix, xgb.DMatrix):
+        raise InvalidInput("Type error: input parameter is not DMatrix")
+
     xgb_version = xgb.__version__
     if xgb_version not in XGBOOST_VER_2_STREAM_PARSER:
         raise UnsupportedVersion
