@@ -12,7 +12,7 @@ To install the library, run:
 
 Then, you can call in your code:
 
-    from dmatrix2np import dmatrix2np
+    from dmatrix2np import dmatrix_to_numpy
 
     converted_np_array = dmatrix_to_numpy(dmatrix)
 
