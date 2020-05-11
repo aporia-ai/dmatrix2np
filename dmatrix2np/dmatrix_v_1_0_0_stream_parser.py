@@ -25,7 +25,7 @@ class DMatrixStreamParserV1_0_0(DMatrixStreamParser):
         return self._get_nparray()
     
     def _parse_magic(self):
-        kMagic = self._read_struct(KMAGIC_STRUCT)[0]
+        kMagic, = self._read_struct(KMAGIC_STRUCT)
         if kMagic != self.kMagic:
             raise InvalidStructure('Invalid magic')
     
@@ -36,18 +36,18 @@ class DMatrixStreamParserV1_0_0(DMatrixStreamParser):
         self._version = self._read_struct(VERSION_STRUCT)
 
     def _skip_fields(self):
-        fields_count = self._read_struct(VECTOR_SIZE_STRUCT)[0]
+        fields_count, = self._read_struct(VECTOR_SIZE_STRUCT)
         for _ in range(fields_count):
             self._skip_field()
     
     def _skip_field(self):
         # Skip field name (pascal string)
-        name_size = self._read_struct(VECTOR_SIZE_STRUCT)[0]
+        name_size, = self._read_struct(VECTOR_SIZE_STRUCT)
         self._handle.seek(name_size, SEEK_CUR)
         
         # Find field type
         field_type = FieldDataType(self._read_struct(FIELD_TYPE_STRUCT)[0])
-        is_scalar = self._read_struct(FLAG_STRUCT)[0]
+        is_scalar, = self._read_struct(FLAG_STRUCT)
         
         if is_scalar:
             self._handle.seek(data_type_sizes[field_type.name], SEEK_CUR)
@@ -55,7 +55,7 @@ class DMatrixStreamParserV1_0_0(DMatrixStreamParser):
             # Skip shape.first, shape.second
             self._handle.seek(2 * data_type_sizes['uint64_t'], SEEK_CUR)
 
-            vector_size = self._read_struct(VECTOR_SIZE_STRUCT)[0]
+            vector_size, = self._read_struct(VECTOR_SIZE_STRUCT)
             
             # Skip vector
             self._handle.seek(vector_size * data_type_sizes[field_type.name], SEEK_CUR)

@@ -5,7 +5,8 @@ import sys
 
 class FieldDataType(Enum):
     """
-    
+    This Enum provides an integer translation for the data type corresponding to the 'DataType' enum
+    on '/include/xgboost/data.h' file in the XGBoost project
     """
     kFloat32 = 1
     kDouble = 2
@@ -13,6 +14,7 @@ class FieldDataType(Enum):
     kUInt64 = 4
 
 
+# Dictionary of data types size in bytes
 data_type_sizes = {
     'kFloat32': 4,
     'kDouble': struct.calcsize("d"),
@@ -29,9 +31,8 @@ data_type_sizes = {
     'size_t': struct.calcsize("N"),
 }
 
-BYTE_ORDER_STR = sys.byteorder
-SIZE_T_DTYPE = f'{"<" if BYTE_ORDER_STR == "little" else ">"}i{data_type_sizes["size_t"]}'
 
+SIZE_T_DTYPE = f'{"<" if sys.byteorder == "little" else ">"}i{data_type_sizes["size_t"]}'
 VERSION_STRUCT = struct.Struct('iii')
 SIMPLE_VERSION_STRUCT = struct.Struct('I')
 VECTOR_SIZE_STRUCT = struct.Struct('=Q')

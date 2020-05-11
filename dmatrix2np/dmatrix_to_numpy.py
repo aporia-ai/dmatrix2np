@@ -3,7 +3,7 @@ import os
 import xgboost as xgb
 from .dmatrix_v_1_0_0_stream_parser import DMatrixStreamParserV1_0_0
 from .dmatrix_v_0_80_stream_parser import DMatrixStreamParserV0_80
-from .exceptions import UnsupportedVersion, InvalidInput
+from .exceptions import InvalidInput
 from packaging import version
 
 
@@ -21,6 +21,7 @@ def dmatrix_to_numpy(dmatrix):
         dmatrix.save_binary(fp.name)
         result = stream_parser(fp, dmatrix.num_row(), dmatrix.num_col()).parse()
     finally:
+        # We can safely remove the temp file now, parsing process finished
         fp.close()
         os.remove(fp.name)
     return result

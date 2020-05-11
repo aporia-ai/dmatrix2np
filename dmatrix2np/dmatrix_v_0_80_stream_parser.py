@@ -25,12 +25,12 @@ class DMatrixStreamParserV0_80(DMatrixStreamParser):
         return self._get_nparray()
 
     def _parse_magic(self):
-        kMagic = self._read_struct(KMAGIC_STRUCT)[0]
+        kMagic, = self._read_struct(KMAGIC_STRUCT)
         if kMagic != self.kMagic:
             raise InvalidStructure('Invalid magic')
 
     def _parse_version(self):
-        version = self._read_struct(SIMPLE_VERSION_STRUCT)[0]
+        version, = self._read_struct(SIMPLE_VERSION_STRUCT)
         if version != self.kVersion:
             raise InvalidStructure('Invalid version')
 
@@ -51,5 +51,5 @@ class DMatrixStreamParserV0_80(DMatrixStreamParser):
         # Each vector field starts with uint64_t size indicator
         # followed by number of vector entries equals to indicated size
         for vector_entry_size in vectors_entry_sizes:
-            vector_size = self._read_struct(VECTOR_SIZE_STRUCT)[0]
+            vector_size, = self._read_struct(VECTOR_SIZE_STRUCT)
             self._handle.read(vector_size * vector_entry_size)
