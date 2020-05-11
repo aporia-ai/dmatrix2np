@@ -4,6 +4,9 @@ import sys
 
 
 class FieldDataType(Enum):
+    """
+    
+    """
     kFloat32 = 1
     kDouble = 2
     kUInt32 = 3
