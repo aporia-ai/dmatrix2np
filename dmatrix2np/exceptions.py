@@ -1,5 +1,5 @@
 class DMatrix2NpError(Exception):
-    ''' Basic exception for errors raised by dmatrix2np'''
+    '''Basic exception for errors raised by dmatrix2np'''
     pass
 
 

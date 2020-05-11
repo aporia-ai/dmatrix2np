@@ -28,3 +28,10 @@ data_type_sizes = {
 
 BYTE_ORDER_STR = sys.byteorder
 SIZE_T_DTYPE = f'{"<" if BYTE_ORDER_STR == "little" else ">"}i{data_type_sizes["size_t"]}'
+
+VERSION_STRUCT = struct.Struct('iii')
+SIMPLE_VERSION_STRUCT = struct.Struct('I')
+VECTOR_SIZE_STRUCT = struct.Struct('=Q')
+FIELD_TYPE_STRUCT = struct.Struct('b')
+FLAG_STRUCT = struct.Struct('?')
+KMAGIC_STRUCT = struct.Struct('I')

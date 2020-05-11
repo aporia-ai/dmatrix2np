@@ -1,7 +1,7 @@
 from .dmatrix_stream_parser import DMatrixStreamParser
 from .exceptions import InvalidStructure
-from .common import data_type_sizes, SIZE_T_DTYPE, BYTE_ORDER_STR
-import numpy as np
+from .common import data_type_sizes, SIMPLE_VERSION_STRUCT, VECTOR_SIZE_STRUCT, KMAGIC_STRUCT
+from os import SEEK_CUR
 
 
 class DMatrixStreamParserV0_80(DMatrixStreamParser):
@@ -14,30 +14,29 @@ class DMatrixStreamParserV0_80(DMatrixStreamParser):
         self._handle = buffer_reader
         self.num_row = num_row
         self.num_col = num_col
-        self._parse()
 
-    def _parse(self):
+    def parse(self):
         self._handle.seek(0)
         self._parse_magic()
         self._parse_version()
         self._skip_fields()
         self._parse_offset_vector()
         self._parse_data_vector()
-        self._to_nparray()
+        return self._get_nparray()
 
     def _parse_magic(self):
-        kMagic = self._handle.read(data_type_sizes['int'])
-        if kMagic != self.kMagic.to_bytes(data_type_sizes['int'], byteorder=BYTE_ORDER_STR):
+        kMagic = self._read_struct(KMAGIC_STRUCT)[0]
+        if kMagic != self.kMagic:
             raise InvalidStructure('Invalid magic')
 
     def _parse_version(self):
-        version = self._handle.read(data_type_sizes['int32_t'])
-        if version != self.kVersion.to_bytes(data_type_sizes['int32_t'], byteorder=BYTE_ORDER_STR):
+        version = self._read_struct(SIMPLE_VERSION_STRUCT)[0]
+        if version != self.kVersion:
             raise InvalidStructure('Invalid version')
 
     def _skip_fields(self):
         # Skip num_row_, num_col_, num_nonzero_ (all uint64_t)
-        self._handle.read(self.NUM_OF_SCALAR_FIELDS * data_type_sizes['uint64_t'])
+        self._handle.seek(self.NUM_OF_SCALAR_FIELDS * data_type_sizes['uint64_t'], SEEK_CUR)
 
         # skip info's vector fields (labels_, group_ptr_, qids_, weights_, root_index_, base_margin_)
         vectors_entry_sizes = [
@@ -52,30 +51,5 @@ class DMatrixStreamParserV0_80(DMatrixStreamParser):
         # Each vector field starts with uint64_t size indicator
         # followed by number of vector entries equals to indicated size
         for vector_entry_size in vectors_entry_sizes:
-            vector_size = int.from_bytes(self._handle.read(data_type_sizes['uint64_t']), BYTE_ORDER_STR)
+            vector_size = self._read_struct(VECTOR_SIZE_STRUCT)[0]
             self._handle.read(vector_size * vector_entry_size)
-
-    def _parse_offset_vector(self):
-        offset_vector_size = int.from_bytes(self._handle.read(data_type_sizes['uint64_t']), BYTE_ORDER_STR)
-        self._offset_vector = np.frombuffer(buffer=self._handle.read(offset_vector_size * data_type_sizes['size_t']),
-                                            dtype=SIZE_T_DTYPE)
-
-    def _parse_data_vector(self):
-        data_vector_size = int.from_bytes(self._handle.read(data_type_sizes['uint64_t']), BYTE_ORDER_STR)
-        data_vector_entry_size = data_type_sizes['uint32_t'] + data_type_sizes['float']
-        self._data_vector = np.frombuffer(buffer=self._handle.read(data_vector_size * data_vector_entry_size),
-                                          dtype=np.dtype([('keys', 'i4'), ('data', 'float32')]))
-
-    def _to_nparray(self):
-        if self.num_row == 0 or self.num_col == 0:
-            self.np_array = np.empty((self.num_row, self.num_col))
-            return
-        matrix = np.nan * np.empty((self.num_row * self.num_col))
-        sizes = self._offset_vector[1:] - self._offset_vector[:-1]
-        add_array = np.repeat(np.arange(0, sizes.size * self.num_col, self.num_col), sizes)
-        new_keys = self._data_vector['keys'] + add_array
-        matrix[new_keys] = self._data_vector['data']
-        self.np_array = matrix.reshape((self.num_row, self.num_col))
-
-    def get_nparray(self):
-        return self.np_array

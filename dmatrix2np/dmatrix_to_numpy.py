@@ -26,8 +26,13 @@ def dmatrix_to_numpy(dmatrix):
         raise UnsupportedVersion
     stream_parser = XGBOOST_VER_2_STREAM_PARSER[xgb_version]
 
-    with tempfile.NamedTemporaryFile(delete=False) as fp:
+    # We set delete=False to avoid permissions error. This way, file can be accessed
+    # by XGBoost without being deleted while handle is closed
+    fp = tempfile.NamedTemporaryFile(delete=False)
+    try:
         dmatrix.save_binary(fp.name)
-        result = stream_parser(fp, dmatrix.num_row(), dmatrix.num_col()).get_nparray()
-    os.remove(fp.name)
+        result = stream_parser(fp, dmatrix.num_row(), dmatrix.num_col()).parse()
+    finally:
+        fp.close()
+        os.remove(fp.name)
     return result
