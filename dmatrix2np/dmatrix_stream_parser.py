@@ -4,7 +4,6 @@ from struct import Struct
 from .common import SIZE_T_DTYPE, data_type_sizes, VECTOR_SIZE_STRUCT
 
 
-
 class DMatrixStreamParser(metaclass=abc.ABCMeta):
     """Abstract base class for DMatrix stream parser."""
 
@@ -51,7 +50,7 @@ class DMatrixStreamParser(metaclass=abc.ABCMeta):
         # When the matrix is flat, there are no values and matrix could be generated immediately
         if self.num_row == 0 or self.num_col == 0:
             return np.empty((self.num_row, self.num_col))
-        
+
         # Create flat matrix filled with nan values
         matrix = np.nan * np.empty((self.num_row * self.num_col))
 
@@ -64,7 +63,7 @@ class DMatrixStreamParser(metaclass=abc.ABCMeta):
         # increase vector is the addition needed for the column index to be 1d index
         increase_vector = np.repeat(np.arange(0, size_vector.size * self.num_col, self.num_col), size_vector)
         flat_indexes = self._data_vector['column_index'] + increase_vector
-        
+
         # Values assignment
         matrix[flat_indexes] = self._data_vector['data']
         return matrix.reshape((self.num_row, self.num_col))

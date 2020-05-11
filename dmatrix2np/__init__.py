@@ -1,5 +1,5 @@
 from .dmatrix_to_numpy import dmatrix_to_numpy
-from .exceptions import *
+from .exceptions import DMatrix2NpError, InvalidStructure, UnsupportedVersion, InvalidInput
 
 # Single source the package version
 try:
