@@ -6,6 +6,7 @@ from .dmatrix_v_1_0_0_stream_parser import DMatrixStreamParserV1_0_0
 from .dmatrix_v_0_80_stream_parser import DMatrixStreamParserV0_80
 from .exceptions import InvalidInput
 from packaging import version
+from contextlib import suppress
 
 
 def dmatrix_to_numpy(dmatrix: xgb.DMatrix) -> np.ndarray:
@@ -34,12 +35,13 @@ def dmatrix_to_numpy(dmatrix: xgb.DMatrix) -> np.ndarray:
 
     # We set delete=False to avoid permissions error. This way, file can be accessed
     # by XGBoost without being deleted while handle is closed
-    fp = tempfile.NamedTemporaryFile(delete=False)
     try:
-        dmatrix.save_binary(fp.name)
-        result = stream_parser(fp, dmatrix.num_row(), dmatrix.num_col()).parse()
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            dmatrix.save_binary(fp.name)
+            result = stream_parser(fp, dmatrix.num_row(), dmatrix.num_col()).parse()
     finally:
         # We can safely remove the temp file now, parsing process finished
-        fp.close()
-        os.remove(fp.name)
+        with suppress(OSError):
+            os.remove(fp.name)
+
     return result
