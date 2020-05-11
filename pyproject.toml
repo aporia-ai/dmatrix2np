@@ -6,7 +6,7 @@ authors = ["Aporia technologies ltd <dev@aporia.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = "^=3.6.1"
+python = ">=3.6.1"
 numpy = "*"
 
 [tool.poetry.dev-dependencies]
