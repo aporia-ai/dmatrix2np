@@ -1,0 +1,5 @@
+[style]
+indent_width = 4
+column_limit = 110
+allow_split_before_dict_value = false
+split_before_expression_after_opening_paren = true
