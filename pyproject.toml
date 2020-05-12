@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dmatrix2np"
-version = "1.0.1"
+version = "1.0.2"
 description = "Convert XGBoost's DMatrix to numpy array"
 authors = ["Aporia technologies ltd <dev@aporia.com>"]
 license = "GPL-3.0"
@@ -8,6 +8,7 @@ license = "GPL-3.0"
 [tool.poetry.dependencies]
 python = ">=3.6.1"
 numpy = "*"
+importlib-metadata = "^1.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.4.1"
