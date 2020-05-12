@@ -3,8 +3,10 @@ from .exceptions import DMatrix2NpError, InvalidStructure, UnsupportedVersion, I
 
 # Single source the package version
 try:
+    # Python 3.8 - in std lib
     from importlib.metadata import version, PackageNotFoundError  # type: ignore
 except ImportError:  # pragma: no cover
+    # Other python versions
     from importlib_metadata import version, PackageNotFoundError  # type: ignore
 try:
     __version__ = version(__name__)
