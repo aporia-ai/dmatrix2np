@@ -12,6 +12,7 @@ class FieldDataType(Enum):
     kDouble = 2
     kUInt32 = 3
     kUInt64 = 4
+    kStr = 5
 
 
 # Dictionary of data types size in bytes
@@ -20,6 +21,7 @@ data_type_sizes = {
     'kDouble': struct.calcsize("d"),
     'kUInt32': 4,
     'kUInt64': 8,
+    'kStr': struct.calcsize('s'),
     'bool': 1,
     'uint8_t': 1,
     'int32_t': 4,
@@ -30,7 +32,6 @@ data_type_sizes = {
     'double': struct.calcsize("d"),
     'size_t': struct.calcsize("N"),
 }
-
 
 SIZE_T_DTYPE = f'{"<" if sys.byteorder == "little" else ">"}i{data_type_sizes["size_t"]}'
 VERSION_STRUCT = struct.Struct('iii')
