@@ -26,7 +26,7 @@ To install all dependencies and run tests:
 
     poetry run pytest
     
-To run tests on the entire matrix (Python 3.6, 3.7, 3.8 + XGBoost 0.80, 0.90, 1.0):
+To run tests on the entire matrix (Python 3.6, 3.7, 3.8, 3.9 + XGBoost 0.80, 0.90, 1.0, 1.1, 1.2, 1.3, 1.4):
     
     pip install tox
     tox
