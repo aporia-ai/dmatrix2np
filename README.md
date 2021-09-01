@@ -4,6 +4,8 @@
 
 Convert XGBoost's DMatrix format to np.array.
 
+<p align="center">Made with :heart: by <a href="https://aporia.com" target="_blank">Aporia</a></p>
+
 ## Usage
 
 To install the library, run:
@@ -30,3 +32,8 @@ To run tests on the entire matrix (Python 3.6, 3.7, 3.8, 3.9 + XGBoost 0.80, 0.9
     
     pip install tox
     tox
+
+### The Research Behind
+
+In the flowing blog post we describe the research that has been done to understand the DMatrix format and creating this library:
+[DMatrix to Numpy Research](https://www.aporia.com/how-to-convert-dmatrix-to-numpy-format-for-your-machine-learning-model-3/)
