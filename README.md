@@ -1,6 +1,6 @@
 # dmatrix2np
 
-[![Tests](https://github.com/aporia-ai/dmatrix2np/workflows/Test/badge.svg)](https://github.com/aporia-ai/dmatrix2np/actions?workflow=Test) [![PyPI](https://img.shields.io/pypi/v/dmatrix2np.svg)](https://pypi.org/project/dmatrix2np/)
+[![Tests](https://github.com/aporia-ai/dmatrix2np/workflows/Test/badge.svg)](https://github.com/aporia-ai/dmatrix2np/actions?workflow=Test) [![PyPI](https://img.shields.io/pypi/v/dmatrix2np.svg)](https://pypi.org/project/dmatrix2np/) [![Downloads](https://pepy.tech/badge/dmatrix2np)](https://pepy.tech/project/dmatrix2np)
 
 Convert XGBoost's DMatrix format to np.array.
 
