@@ -4,7 +4,7 @@
 
 Convert XGBoost's DMatrix format to np.array.
 
-<p align="center">Made with :heart: by <a href="https://aporia.com" target="_blank">Aporia</a></p>
+<p align="center">Made with :heart: by <a href="https://www.aporia.com?utm_source=github&utm_medium=github&utm_campaign=dmatrix2np" target="_blank">Aporia</a></p>
 
 ## Usage
 
